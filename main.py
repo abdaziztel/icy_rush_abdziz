@@ -74,9 +74,9 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
     chat_id = "-1002218840216"
     telegram_api_url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
     
-    # Update the message text with emojis and user-friendly language
+    # Update the message text with emojis, user-friendly language, and bold text
     if product_status == "متوفر":
-        message_text = f"✅ المنتج متاح ✅: {product_name}"
+        message_text = f"✅ **المنتج متاح** ✅: {product_name}"
         reply_markup = {
             "inline_keyboard": [
                 [{"text": "🔍 عرض المنتج", "url": product_link}],
@@ -86,7 +86,7 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
             ]
         }
     else:
-        message_text = f"❌ نفذ من المخزون ❌: {product_name}"
+        message_text = f"❌ **نفذ من المخزون** ❌: {product_name}"
         reply_markup = {
             "inline_keyboard": [
                 [{"text": "🔐 تسجيل الدخول", "url": "https://www.dzrt.com/ar/customer/account/login/"}]
@@ -97,6 +97,7 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
         "chat_id": chat_id,
         "photo": image_url,
         "caption": message_text,
+        "parse_mode": "Markdown",  # Specify Markdown to enable bold text
         "reply_markup": json.dumps(reply_markup)
     }
     
