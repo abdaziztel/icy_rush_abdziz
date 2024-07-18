@@ -79,10 +79,8 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
         message_text = f"✅ **المنتج متاح** ✅: {product_name}"
         reply_markup = {
             "inline_keyboard": [
-                [{"text": "🔍 عرض المنتج", "url": product_link}],
-                [{"text": "🛒 عرض السلة", "url": "https://www.dzrt.com/ar/checkout/cart"}],
-                [{"text": "🔐 تسجيل الدخول", "url": "https://www.dzrt.com/ar/customer/account/login/"}],
-                [{"text": "💳 الانتقال إلى رابط الدفع النهائي", "url": "https://www.dzrt.com/ar/onestepcheckout.html"}]
+                [{"text": "🔍 عرض المنتج", "url": product_link}, {"text": "🛒 عرض السلة", "url": "https://www.dzrt.com/ar/checkout/cart"}],
+                [{"text": "🔐 تسجيل الدخول", "url": "https://www.dzrt.com/ar/customer/account/login/"}, {"text": "💳 الانتقال إلى رابط الدفع النهائي", "url": "https://www.dzrt.com/ar/onestepcheckout.html"}]
             ]
         }
     else:
