@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-# Variable to store the last sent statusj
+# Variable to store the last sent status
 last_sent_status = None
 
 # Path or URL to the stored image for unavailable products
@@ -93,16 +93,29 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
             ]
         }
         # Use the stored image if the product is not available
-        image_url = "notavaliable.jpg"
+        image_url = stored_image_url
 
-    params = {
-        "chat_id": chat_id,
-        "photo": image_url,
-        "caption": message_text,
-        "parse_mode": "Markdown",  # Specify Markdown to enable bold text
-        "reply_markup": json.dumps(reply_markup)
-    }
-    response = requests.post(telegram_api_url, params=params)
+    # Check if image_url is a local file path
+    if not image_url.startswith("http"):
+        with open(image_url, 'rb') as image_file:
+            files = {'photo': image_file}
+            data = {
+                "chat_id": chat_id,
+                "caption": message_text,
+                "parse_mode": "Markdown",  # Specify Markdown to enable bold text
+                "reply_markup": json.dumps(reply_markup)
+            }
+            response = requests.post(telegram_api_url, data=data, files=files)
+    else:
+        params = {
+            "chat_id": chat_id,
+            "photo": image_url,
+            "caption": message_text,
+            "parse_mode": "Markdown",  # Specify Markdown to enable bold text
+            "reply_markup": json.dumps(reply_markup)
+        }
+        response = requests.post(telegram_api_url, params=params)
+
     if response.status_code == 200:
         print(f"Product data sent successfully for {product_name}")
     else:
