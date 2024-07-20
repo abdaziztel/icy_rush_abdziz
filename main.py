@@ -6,6 +6,9 @@ import time
 # Variable to store the last sent status
 last_sent_status = None
 
+# Path or URL to the stored image for unavailable products
+stored_image_url = "path/to/your/stored_image.jpg"  # Update this with the actual path or URL
+
 # Function to fetch URL content with retries
 def fetch_url_with_retry(url, max_retries=7, delay=1):
     retries = 0
@@ -73,7 +76,6 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
     bot_token = "6958486146:AAFtYb_TaInJtSSFevXDn39BCssCzj4inV4"
     chat_id = "-1002218840216"
     telegram_api_url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
-    
     # Update the message text with emojis, user-friendly language, and bold text
     if product_status == "متوفر":
         message_text = f"✅ **المنتج متاح** ✅: {product_name}"
@@ -90,6 +92,8 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
                 [{"text": "🔐 تسجيل الدخول", "url": "https://www.dzrt.com/ar/customer/account/login/"}]
             ]
         }
+        # Use the stored image if the product is not available
+        image_url = "notavaliable.jpg"
 
     params = {
         "chat_id": chat_id,
@@ -98,12 +102,12 @@ def send_product_data_to_telegram(product_name, product_status, image_url, produ
         "parse_mode": "Markdown",  # Specify Markdown to enable bold text
         "reply_markup": json.dumps(reply_markup)
     }
-    
     response = requests.post(telegram_api_url, params=params)
     if response.status_code == 200:
         print(f"Product data sent successfully for {product_name}")
     else:
         print(f"Failed to send product data for {product_name}. Status code: {response.status_code}")
+
 # Main function to run the code
 def main():
     global last_sent_status
