@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-# Variable to store the last sent status
+# Variable to store the last sent statusj
 last_sent_status = None
 
 # Path or URL to the stored image for unavailable products
